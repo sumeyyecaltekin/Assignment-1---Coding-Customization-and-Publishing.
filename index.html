@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>My Web Map</title>
+
+    <!-- ArcGIS CSS -->
+    <link rel="stylesheet" href="https://js.arcgis.com/4.30/esri/themes/light/main.css">
+
+    <!-- ArcGIS JS -->
+    <script src="https://js.arcgis.com/4.30/"></script>
+
+    <style>
+      html, body, #viewDiv {
+        padding: 0;
+        margin: 0;
+        height: 100%;
+        width: 100%;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="viewDiv"></div>
+
+    <script>
+      require(["esri/Map", "esri/views/MapView"], function(Map, MapView) {
+        const map = new Map({
+          basemap: "streets-navigation-vector"
+        });
+
+        const view = new MapView({
+          container: "viewDiv",
+          map: map,
+          center: [-79.3832, 43.6532], // Toronto
+          zoom: 10
+        });
+      });
+    </script>
+  </body>
+</html>
