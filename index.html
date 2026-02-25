@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ArcGIS API JS Map</title>
+  <title>ArcGIS JavaScript Web Map</title>
 
   <!-- ArcGIS API CSS -->
   <link rel="stylesheet" href="https://js.arcgis.com/4.30/esri/themes/light/main.css" />
@@ -28,10 +28,21 @@
     require([
       "esri/Map",
       "esri/views/MapView",
-      "esri/widgets/Search",
+
+      // Required widgets
       "esri/widgets/Home",
-      "esri/widgets/BasemapToggle"
-    ], function (Map, MapView, Search, Home, BasemapToggle) {
+      "esri/widgets/Sketch",
+      "esri/layers/GraphicsLayer",
+
+      // Additional widgets
+      "esri/widgets/Search",
+      "esri/widgets/BasemapToggle",
+      "esri/widgets/ScaleBar"
+    ], function(
+      Map, MapView,
+      Home, Sketch, GraphicsLayer,
+      Search, BasemapToggle, ScaleBar
+    ) {
 
       const map = new Map({
         basemap: "streets-navigation-vector"
@@ -44,24 +55,41 @@
         zoom: 10
       });
 
-      // 🔍 Search Widget
+      // Search Widget
       const searchWidget = new Search({
         view: view
       });
       view.ui.add(searchWidget, "top-right");
 
-      // 🏠 Home Widget
+      // Home Widget
       const homeWidget = new Home({
         view: view
       });
       view.ui.add(homeWidget, "top-left");
 
-      // 🗺️ BasemapToggle
+      // Sketch Widget
+      const graphicsLayer = new GraphicsLayer();
+      map.add(graphicsLayer);
+
+      const sketch = new Sketch({
+        view: view,
+        layer: graphicsLayer
+      });
+      view.ui.add(sketch, "top-right");
+
+      // BasemapToggle Widget
       const basemapToggle = new BasemapToggle({
         view: view,
         nextBasemap: "satellite"
       });
       view.ui.add(basemapToggle, "bottom-right");
+
+      // ScaleBar Widget
+      const scaleBar = new ScaleBar({
+        view: view,
+        unit: "metric"
+      });
+      view.ui.add(scaleBar, "bottom-left");
 
     });
   </script>
