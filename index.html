@@ -1,41 +1,69 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <title>My Web Map</title>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ArcGIS API JS Map</title>
 
-    <!-- ArcGIS CSS -->
-    <link rel="stylesheet" href="https://js.arcgis.com/4.30/esri/themes/light/main.css">
+  <!-- ArcGIS API CSS -->
+  <link rel="stylesheet" href="https://js.arcgis.com/4.30/esri/themes/light/main.css" />
 
-    <!-- ArcGIS JS -->
-    <script src="https://js.arcgis.com/4.30/"></script>
+  <style>
+    html, body, #viewDiv {
+      padding: 0;
+      margin: 0;
+      height: 100%;
+      width: 100%;
+    }
+  </style>
+</head>
 
-    <style>
-      html, body, #viewDiv {
-        padding: 0;
-        margin: 0;
-        height: 100%;
-        width: 100%;
-      }
-    </style>
-  </head>
+<body>
+  <div id="viewDiv"></div>
 
-  <body>
-    <div id="viewDiv"></div>
+  <!-- ArcGIS API JS -->
+  <script src="https://js.arcgis.com/4.30/"></script>
 
-    <script>
-      require(["esri/Map", "esri/views/MapView"], function(Map, MapView) {
-        const map = new Map({
-          basemap: "streets-navigation-vector"
-        });
+  <script>
+    require([
+      "esri/Map",
+      "esri/views/MapView",
+      "esri/widgets/Search",
+      "esri/widgets/Home",
+      "esri/widgets/BasemapToggle"
+    ], function (Map, MapView, Search, Home, BasemapToggle) {
 
-        const view = new MapView({
-          container: "viewDiv",
-          map: map,
-          center: [-79.3832, 43.6532], // Toronto
-          zoom: 10
-        });
+      const map = new Map({
+        basemap: "streets-navigation-vector"
       });
-    </script>
-  </body>
+
+      const view = new MapView({
+        container: "viewDiv",
+        map: map,
+        center: [-79.3832, 43.6532], // Toronto
+        zoom: 10
+      });
+
+      // 🔍 Search Widget
+      const searchWidget = new Search({
+        view: view
+      });
+      view.ui.add(searchWidget, "top-right");
+
+      // 🏠 Home Widget
+      const homeWidget = new Home({
+        view: view
+      });
+      view.ui.add(homeWidget, "top-left");
+
+      // 🗺️ BasemapToggle
+      const basemapToggle = new BasemapToggle({
+        view: view,
+        nextBasemap: "satellite"
+      });
+      view.ui.add(basemapToggle, "bottom-right");
+
+    });
+  </script>
+</body>
 </html>
